@@ -1,0 +1,31 @@
+# Construction Supply E-Commerce Starter
+
+A Django-powered starter site for a family-owned construction supply store. It includes a customer-friendly catalog with ordering, real-time stock tracking, and a simple inventory dashboard.
+
+## Features
+- Product catalog with descriptions, pricing, and live stock badges.
+- Quick order form that automatically reserves inventory and prevents overselling.
+- Inventory dashboard to add or edit products without leaving the site.
+- Google Maps link so customers can get directions to the physical store.
+- Django admin for deeper management and reporting.
+
+## Getting started
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Apply migrations and create a superuser for the admin dashboard:
+   ```bash
+   python manage.py migrate
+   python manage.py createsuperuser
+   ```
+3. Run the development server:
+   ```bash
+   python manage.py runserver 0.0.0.0:8000
+   ```
+4. Visit `http://localhost:8000` for the storefront or `http://localhost:8000/admin` for admin tools.
+
+## Production notes
+- Set `DEBUG=0` and configure `ALLOWED_HOSTS` plus a secure `SECRET_KEY` environment variable.
+- Serve static files from `staticfiles/` using a web server or CDN.
+- Add HTTPS and caching at the edge for faster, safer performance.
