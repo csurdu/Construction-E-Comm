@@ -1,7 +1,4 @@
 from django import forms
-from django.db import transaction
-from django.db.models import F
-from django.utils import timezone
 
 from .models import Item, Order, OrderItem
 
@@ -26,7 +23,6 @@ class OrderForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["item"].queryset = Item.objects.filter(quantity__gt=0)
         for name, field in self.fields.items():
             field.widget.attrs.update({"class": "form-control mb-2"})
             if name == "item":
@@ -45,31 +41,17 @@ class OrderForm(forms.Form):
         item = self.cleaned_data["item"]
         quantity = self.cleaned_data["quantity"]
 
-        with transaction.atomic():
-            # Lock the row to prevent overselling during concurrent orders.
-            locked_item = (
-                Item.objects.select_for_update()
-                .filter(pk=item.pk)
-                .first()
-            )
-            if locked_item is None or locked_item.quantity < quantity:
-                raise forms.ValidationError(
-                    "The item is no longer available in the requested quantity."
-                )
+        order = Order.objects.create(
+            customer_name=self.cleaned_data["customer_name"],
+            customer_email=self.cleaned_data.get("customer_email", ""),
+        )
+        OrderItem.objects.create(
+            order=order,
+            item=item,
+            quantity=quantity,
+            unit_price=item.price,
+        )
 
-            order = Order.objects.create(
-                customer_name=self.cleaned_data["customer_name"],
-                customer_email=self.cleaned_data.get("customer_email", ""),
-            )
-            OrderItem.objects.create(
-                order=order,
-                item=locked_item,
-                quantity=quantity,
-                unit_price=locked_item.price,
-            )
-
-            Item.objects.filter(pk=locked_item.pk).update(
-                quantity=F("quantity") - quantity,
-                last_updated=timezone.now(),
-            )
+        item.quantity = max(item.quantity - quantity, 0)
+        item.save(update_fields=["quantity", "last_updated"])
         return order

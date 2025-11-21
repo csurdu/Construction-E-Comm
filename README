@@ -26,7 +26,6 @@ A Django-powered starter site for a family-owned construction supply store. It i
 4. Visit `http://localhost:8000` for the storefront or `http://localhost:8000/admin` for admin tools.
 
 ## Production notes
-- Set `DJANGO_DEBUG=false`, configure `DJANGO_ALLOWED_HOSTS`, and provide a secure `DJANGO_SECRET_KEY` environment variable.
-- Add store metadata via env vars: `STORE_NAME`, `STORE_MAP_URL`, `STORE_ADDRESS`, `STORE_PHONE`, `STORE_EMAIL`, and `STORE_HOURS`.
+- Set `DEBUG=0` and configure `ALLOWED_HOSTS` plus a secure `SECRET_KEY` environment variable.
 - Serve static files from `staticfiles/` using a web server or CDN.
 - Add HTTPS and caching at the edge for faster, safer performance.

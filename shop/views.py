@@ -6,6 +6,9 @@ from .forms import ItemForm, OrderForm
 from .models import Item
 
 
+STORE_MAP_URL = "https://maps.google.com/?q=Your+Store+Address"
+
+
 def home(request):
     items = Item.objects.all()
     order_form = OrderForm(request.POST or None)
@@ -21,6 +24,7 @@ def home(request):
     context = {
         "items": items,
         "order_form": order_form,
+        "store_map_url": STORE_MAP_URL,
         "submitted_item_id": submitted_item_id,
     }
     return render(request, "shop/home.html", context)
@@ -30,6 +34,7 @@ def inventory(request):
     items = Item.objects.all()
     context = {
         "items": items,
+        "store_map_url": STORE_MAP_URL,
     }
     return render(request, "shop/inventory.html", context)
 
@@ -43,7 +48,7 @@ def add_item(request):
     return render(
         request,
         "shop/item_form.html",
-        {"form": form, "title": "Add Item"},
+        {"form": form, "title": "Add Item", "store_map_url": STORE_MAP_URL},
     )
 
 
@@ -57,5 +62,5 @@ def edit_item(request, pk):
     return render(
         request,
         "shop/item_form.html",
-        {"form": form, "title": f"Edit {item.name}"},
+        {"form": form, "title": f"Edit {item.name}", "store_map_url": STORE_MAP_URL},
     )

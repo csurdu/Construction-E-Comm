@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="col-md-4 text-md-end">
-        <a class="btn btn-outline-primary" href="{{ store_info.map_url }}" target="_blank" rel="noopener">Get directions</a>
+        <a class="btn btn-outline-primary" href="{{ store_map_url }}" target="_blank" rel="noopener">Get directions</a>
     </div>
 </div>
 <div class="row g-3">
@@ -51,18 +51,5 @@
             <div class="alert alert-info">No items found. Add products in the inventory page.</div>
         </div>
     {% endfor %}
-</div>
-<div class="row mt-4">
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h5 class="fw-bold mb-3">Contact & pickup info</h5>
-                <p class="mb-1"><strong>Address:</strong> {{ store_info.address|default:'Add your address in env settings' }}</p>
-                <p class="mb-1"><strong>Phone:</strong> {{ store_info.phone|default:'Add a phone number' }}</p>
-                <p class="mb-1"><strong>Email:</strong> {{ store_info.email|default:'Add a contact email' }}</p>
-                <p class="mb-0"><strong>Hours:</strong> {{ store_info.hours|default:'Add store hours' }}</p>
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock %}
